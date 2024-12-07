@@ -3,7 +3,7 @@
 ## GraphDB + React Integration Project
 This project demonstrates a process to create, update, and query RDF data using GraphDB, visualize results using a React frontend, and prepare data using tools like Protege and OntoRefine.
  
-Table of Contents
+### Table of Contents
 1.	Project Overview
 2.	Prerequisites
 3.	Tools Used
@@ -15,14 +15,14 @@ Table of Contents
 9.	Steps to Run the Project
 10.	Troubleshooting
  
-1. Project Overview
+### Project Overview
 This project solves key challenges in analyzing RDF-based data by:
 1.	Creating ontologies and refining data using Protege and OntoRefine.
 2.	Uploading RDF data (from .ttl files) into GraphDB.
 3.	Running SPARQL queries to analyze and retrieve data.
 4.	Building a React app to fetch, display, and visualize query results.
  
-2. Prerequisites
+### Prerequisites
 Ensure the following tools are installed:
 •	GraphDB: Ontotext's RDF database.
 •	Protege: Ontology editor for building ontologies.
@@ -32,25 +32,26 @@ Ensure the following tools are installed:
 •	Postman: For testing SPARQL endpoints.
 •	TTL Files: RDF Turtle files.
  
-3. Tools Used
-Tool	Purpose
-GraphDB	RDF storage and SPARQL querying
-Protege	Ontology design and editing
-OntoRefine	Data refining and transformation for RDF
-React	Frontend for visualizing query results
+### Tools Used
+Tool	            ||    Purpose
+GraphDB	            ||    RDF storage and SPARQL querying
+Protege	            ||    Ontology design and editing
+OntoRefine	        ||   Data refining and transformation for RDF
+React	            ||    Frontend for visualizing query results
  
-4. Links to Resources (submitted on mail)
+### Links to Resources (submitted on mail)
 •	Project Demo Video: 
 •	TTL Files: 
 •	Integrated Crime Data Analysis: Leveraging Knowledge Networks for Hotspot Detection and Trend Evaluation  Report/Paper.
  
-5. Setting up GraphDB
+### Setting up GraphDB
 Step 1: Install and Start GraphDB
 1.	Download and install GraphDB locally.
 2.	Start the server. By default, it runs on port 7200:
 Step 2: Create a Repository
 1.	Go to Setup > Repositories and create a new repository 
-6. Data Preparation with Protege and OntoRefine
+
+### Data Preparation with Protege and OntoRefine
 Step 1: Build Ontology with Protege
 1.	Use Protege to design your ontology.
 2.	Save the ontology as a .ttl (Turtle) file.
@@ -67,7 +68,7 @@ Step 3: Upload the TTL File to GraphDB
 1.	In GraphDB, go to Import > RDF Upload and upload the .ttl file.
 2.	Run a test query to verify:
  
-7. Setting up the React App
+### Setting up the React App
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -139,7 +140,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
  
-8. Steps to Run the Project
+### Steps to Run the Project
 1. Start GraphDB
 •	Run GraphDB and ensure the repository Vedanya is available.
 2. Start the React App
@@ -149,13 +150,13 @@ npm start
 Open your browser and visit:
 http://localhost:3000
  
-9. Troubleshooting
+### Troubleshooting
 •	406 Not Acceptable Error: Use the correct Accept header (application/sparql-results+json).
 •	CORS Errors: Add a proxy in package.json:
 json
 "proxy": "http://localhost:7200"
  
-10. Conclusion
+### Conclusion
 This project integrates GraphDB with a React frontend and includes the process of:
 •	Building ontologies using Protege.
 •	Cleaning data using OntoRefine.
