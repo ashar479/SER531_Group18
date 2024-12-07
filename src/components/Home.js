@@ -70,14 +70,15 @@ const Home = () => {
             <Typography>
               This use case focuses on the number of arrests made for each type
               of crime in a given year. Using arrest data and information on the
-              type of crime, the further breaks down the arrests by categories
-              such as theft, robbery. By doing so, this type of analysis helps
-              to portray trends in law enforcement activity and points out which
-              crime types received most attention during the year. Such insights
-              enable stakeholders to evaluate law enforcement priorities, assess
-              resource allocation, and understand patterns of police
-              intervention across different crime categories. This is the yearly
-              analysis of arrests according to the different crime types.
+              type of crime, it further breaks down the arrests by categories
+              such as Theft, Robbery, Burglary, etc . By doing so, this type of
+              analysis helps to portray trends in law enforcement activity and
+              points out which crime types received most attention during the
+              year. Such insights enable stakeholders to evaluate law
+              enforcement priorities, assess resource allocation, and understand
+              patterns of police intervention across different crime categories.
+              This is the yearly analysis of arrests according to the different
+              crime types.
             </Typography>
             <Link to="/police_impact">
               <button style={{ padding: '10px', marginTop: '10px' }}>
