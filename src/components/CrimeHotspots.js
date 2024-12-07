@@ -1,112 +1,106 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, CircleMarker, Tooltip } from 'react-leaflet';
-import { Box, Typography } from '@mui/material';
-import 'leaflet/dist/leaflet.css';
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from '@mui/material';
 
-const CrimeHotspots = () => {
-  const [crimeData, setCrimeData] = useState([]);
+const SPARQLQueryResults = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const fetchCrimeData = async () => {
-    const query = `
-      PREFIX smw: <http://www.semanticweb.org/kruthi/ontologies/2024/11/untitled-ontology-13#>
-      SELECT ?location ?latitude ?longitude (COUNT(?crime) AS ?crimeCount)
-      WHERE {
-        ?crime smw:occursAt ?location ;
-               a smw:dr_no .
-        ?location smw:hasLatitudeDimension ?latitude ;
-                  smw:hasLongitudeDimension ?longitude .
-      }
-      GROUP BY ?location ?latitude ?longitude
-      ORDER BY DESC(?crimeCount)
-    `;
-
-    const endpointUrl = 'YOUR_GRAPHDB_ENDPOINT_URL';
-    const queryUrl = `${endpointUrl}?query=${encodeURIComponent(query)}`;
-
-    try {
-      const response = await fetch(queryUrl, {
-        headers: {
-          'Accept': 'application/sparql-results+json',
-        },
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error response from GraphDB:', errorText);
-        throw new Error(`Failed to fetch data: HTTP ${response.status}`);
-      }
-
-      const rawData = await response.text();
-      console.log('Raw Response:', rawData);
-
-      const data = JSON.parse(rawData);
-
-      const formattedData = data.results.bindings.map(item => {
-        const latitude = parseFloat(item.latitude.value.replace('smw:', ''));
-        const longitude = parseFloat(item.longitude.value.replace('smw:', ''));
-        const crimeCount = parseInt(item.crimeCount.value, 10);
-        return { latitude, longitude, crimeCount };
-      });
-
-      console.log('Formatted Crime Data:', formattedData);
-      setCrimeData(formattedData);
-    } catch (error) {
-      console.error('Error fetching crime data:', error);
-      setCrimeData([
-        { latitude: 34.0522, longitude: -118.2437, crimeCount: 150 },
-        { latitude: 34.0523, longitude: -118.2438, crimeCount: 75 },
-        { latitude: 34.05, longitude: -118.25, crimeCount: 30 },
-      ]);
+  // Helper function to extract the plain value from a URI or literal
+  const getPlainValue = (value) => {
+    if (!value) return '';
+    // If it's a URI, extract the local name
+    if (value.startsWith('http')) {
+      const segments = value.split('#');
+      return segments.length > 1 ? segments[1] : value.split('/').pop();
     }
+    // Return the value as-is if it's a literal
+    return value;
   };
 
   useEffect(() => {
-    fetchCrimeData();
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/repositories/Vedanya', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/sparql-query',
+            Accept: 'application/json',
+          },
+          body: `
+            PREFIX smw: <http://www.semanticweb.org/kruthi/ontologies/2024/11/untitled-ontology-13#>
+
+            SELECT ?location ?latitude ?longitude
+            WHERE {
+              ?location smw:hasLatitudeDimension ?latitude ;
+                        smw:hasLongitudeDimension ?longitude .
+            }
+            LIMIT 500
+          `,
+        });
+
+        if (!response.ok) {
+          throw new Error('Error fetching data');
+        }
+
+        const result = await response.json();
+        setData(result.results.bindings);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  const getMarkerColor = (crimeCount) => {
-    if (crimeCount > 100) return 'red';
-    if (crimeCount > 50) return 'orange';
-    if (crimeCount > 25) return 'yellow';
-    return 'green';
-  };
+  if (loading) {
+    return <CircularProgress />;
+  }
 
-  const defaultCenter =
-    crimeData.length > 0
-      ? [crimeData[0].latitude, crimeData[0].longitude]
-      : [34.0522, -118.2437];
+  if (error) {
+    return <Typography color="error">Error: {error}</Typography>;
+  }
 
   return (
     <Box sx={{ padding: 2 }}>
       <Typography variant="h4" gutterBottom>
-        Crime Hotspot Map
+        SPARQL Query Results
       </Typography>
-      <MapContainer
-        center={defaultCenter}
-        zoom={12}
-        style={{ height: '500px', width: '100%' }}
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {crimeData.map((crime, index) => (
-          <CircleMarker
-            key={index}
-            center={[crime.latitude, crime.longitude]}
-            radius={10}
-            color={getMarkerColor(crime.crimeCount)}
-            fillOpacity={0.7}
-          >
-            <Tooltip>
-              <Typography variant="body2">
-                Crime Count: {crime.crimeCount}
-              </Typography>
-            </Tooltip>
-          </CircleMarker>
-        ))}
-      </MapContainer>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Location</TableCell>
+              <TableCell>Latitude</TableCell>
+              <TableCell>Longitude</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.map((row, index) => (
+              <TableRow key={index}>
+                <TableCell>{getPlainValue(row.location?.value)}</TableCell>
+                <TableCell>{getPlainValue(row.latitude?.value)}</TableCell>
+                <TableCell>{getPlainValue(row.longitude?.value)}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 };
 
-export default CrimeHotspots;
+export default SPARQLQueryResults;
