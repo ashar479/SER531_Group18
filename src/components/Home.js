@@ -18,14 +18,14 @@ const Home = () => {
             </Typography>
             <Typography>
               Crime hotspots represent areas with higher incidents of crime,
-              often highlighting underlying socio-economic or en- vironmental
+              often highlighting underlying socio-economic or environmental
               issues. By utilizing detailed location information, such as Block,
               Community Area, Beat, District, and Ward, alongside data on crime
               type and location descriptions, the project aims to precisely
               identify high-risk areas. This hotspot analysis supports law
               enforcement in deploying resources effectively and implementing
-              preventive measures in spe- cific environments—like streets,
-              apartments, or commercial areas—where specific crimes, such as
+              preventive measures in specific environments like streets,
+              apartments, or commercial areas where specific crimes, such as
               theft or assault, occur frequently.
             </Typography>
             <Link to="/crime_hotspots">
@@ -43,16 +43,15 @@ const Home = () => {
             </Typography>
             <Typography>
               Temporal data reveals crime patterns over time, providing insights
-              into both short-term fluctuations and long-term trends. Fields
-              like Date and Year enable the examination of trends at hourly,
-              daily, and yearly intervals. This temporal analysis assists law
-              enforcement agencies in anticipating periods of heightened
-              criminal activity, optimizing resource deployment during peak
-              times, and developing predictive policing strate- gies. The
-              “Updated On” field further supports an understand- ing of data
-              currency, especially useful when dealing with real-time or
-              frequently updated datasets to ensure ongoing relevance in
-              analyses.
+              into both short term fluctuations and long term trends. Focusing
+              on the Year field, this analysis examines crime trends on an
+              annual basis to identify patterns of increase or decrease in
+              criminal activity. By analyzing yearly data, law enforcement
+              agencies can better understand long term shifts in crime dynamics,
+              evaluate the effectiveness of past strategies, and plan
+              interventions accordingly. This annual perspective ensures a
+              comprehensive understanding of crime trends, aiding in resource
+              optimization and the development of proactive policing strategies.
             </Typography>
             <Link to="/temporal_analysis">
               <button style={{ padding: '10px', marginTop: '10px' }}>
@@ -94,20 +93,15 @@ const Home = () => {
               Cross-City Benchmarking of Crime Trends
             </Typography>
             <Typography>
-              Cross-city benchmarking enables a comparative analysis of crime
-              patterns between Chicago and Los Angeles. By examining attributes
-              such as Primary Type, Crime Description, and location-specific
-              identifiers (Community Area, District, Beat, Ward), this use case
-              highlights unique and common trends across cities. Temporal fields
-              like Year and Date fa- cilitate comparisons of crime trends across
-              seasons or years, supporting a detailed examination of how crime
-              dynamics vary geographically. This approach identifies successful
-              strategies from one city that may be adapted by the other,
-              promoting shared knowledge and enhancing public safety across
-              regions.
+              Cross city benchmarking enables a comparative analysis of Chicago
+              and Los Angeles crime patterns. Specifically, it compares crime
+              counts across various categories, highlighting the type of crime,
+              the city, and the associated crime count. This comparison aims to
+              deepen insights into the crime dynamics of these urban areas and
+              contribute to the overarching narrative of regional crime patterns
             </Typography>
             <Link to="/cross_city">
-              <button style={{ padding: '10px', marginTop: '10px' }}>
+              <button style={{ padding: '10px', marginTop: '105px' }}>
                 View Graph
               </button>
             </Link>

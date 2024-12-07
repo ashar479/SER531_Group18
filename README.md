@@ -40,7 +40,7 @@ OntoRefine	        ||   Data refining and transformation for RDF
 React	            ||    Frontend for visualizing query results
  
 ### Links to Resources (submitted on mail)
-•	Project Demo Video: 
+•	Project Demo Video: https://youtu.be/wQm1PqIL4hU
 •	TTL Files: 
 •	Integrated Crime Data Analysis: Leveraging Knowledge Networks for Hotspot Detection and Trend Evaluation  Report/Paper.
  
