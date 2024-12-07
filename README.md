@@ -36,11 +36,11 @@ Ensure the following tools are installed:
 Tool	            ||    Purpose
 GraphDB	            ||    RDF storage and SPARQL querying
 Protege	            ||    Ontology design and editing
-OntoRefine	        ||   Data refining and transformation for RDF
+OntoRefine	        ||    Data refining and transformation for RDF
 React	            ||    Frontend for visualizing query results
  
 ### Links to Resources (submitted on mail)
-•	Project Demo Video: https://youtu.be/wQm1PqIL4hU
+•	Project Demo Video: https://youtu.be/vsOfqYMOX8A
 •	TTL Files: 
 •	Integrated Crime Data Analysis: Leveraging Knowledge Networks for Hotspot Detection and Trend Evaluation  Report/Paper.
  
@@ -161,5 +161,10 @@ This project integrates GraphDB with a React frontend and includes the process o
 •	Building ontologies using Protege.
 •	Cleaning data using OntoRefine.
 •	Querying SPARQL endpoints and visualizing data dynamically.
-________________________________________________________________________________________________________________________
 
+### Changes made to the overall design after Deliverable 2 submission
+Updated Use Case 3: Analyzing Impact of Police Presence on Crime Reduction. The original use case was on analyzing police presence using arrest data as a proxy for police interventions. However, upon further analysis, it was found that the data being represented was repetitive, leading to redundant insights.
+Use latest Case 3, features a richer ontology visualized to map interrelations of Crime, Location, Time, and Police Presence. The various mappings shown in the refactored solution provide a better view of how police interventions impinge on specific places, times, and types of crimes, represented more effectively in the updated approach.
+
+
+_____________________________________________________________________________________________________________________
