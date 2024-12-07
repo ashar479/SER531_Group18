@@ -8,9 +8,12 @@ import L from 'leaflet'; // Import Leaflet to fix the icon issue
 // Fix for default icon issue
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconRetinaUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl:
+    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
 const SPARQLQueryResults = () => {
@@ -20,11 +23,15 @@ const SPARQLQueryResults = () => {
 
   const getPlainValue = (value) => {
     if (!value) return '';
+    // If it's a URI, extract the local name
     if (value.startsWith('http')) {
       const segments = value.split('#');
-      return segments.length > 1 ? segments[1] : value.split('/').pop();
+      return decodeURIComponent(
+        segments.length > 1 ? segments[1] : value.split('/').pop()
+      );
     }
-    return value;
+    // Decode URL-encoded literals
+    return decodeURIComponent(value);
   };
 
   useEffect(() => {
@@ -39,12 +46,15 @@ const SPARQLQueryResults = () => {
           body: `
             PREFIX smw: <http://www.semanticweb.org/kruthi/ontologies/2024/11/untitled-ontology-13#>
 
-            SELECT ?location ?latitude ?longitude
-            WHERE {
-              ?location smw:hasLatitudeDimension ?latitude ;
-                        smw:hasLongitudeDimension ?longitude .
-            }
-            LIMIT 1000
+            SELECT ?crm_cd_desc ?location ?latitude ?longitude
+WHERE {
+    ?dr_no smw:occursAt ?location .
+    ?dr_no smw:linkedToCrimeCode ?crm_cd.
+    ?crm_cd smw:hasDescription ?crm_cd_desc.
+    ?location smw:hasLatitudeDimension ?latitude .
+    ?location smw:hasLongitudeDimension ?longitude .
+}
+            LIMIT 10000
           `,
         });
 
@@ -76,6 +86,7 @@ const SPARQLQueryResults = () => {
     location: getPlainValue(row.location?.value),
     lat: parseFloat(getPlainValue(row.latitude?.value)),
     lng: parseFloat(getPlainValue(row.longitude?.value)),
+    descr: getPlainValue(row.crm_cd_desc?.value), // Remove parseFloat here
   }));
 
   return (
@@ -101,6 +112,8 @@ const SPARQLQueryResults = () => {
                 <strong>Latitude:</strong> {point.lat}
                 <br />
                 <strong>Longitude:</strong> {point.lng}
+                <br />
+                <strong>Description:</strong> {point.descr}
               </Popup>
             </Marker>
           ))}
