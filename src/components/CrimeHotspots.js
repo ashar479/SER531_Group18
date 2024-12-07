@@ -1,31 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Typography,
-  CircularProgress,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from '@mui/material';
+import { Box, Typography, CircularProgress } from '@mui/material';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import MarkerClusterGroup from 'react-leaflet-cluster'; // Import for clustering
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet'; // Import Leaflet to fix the icon issue
+
+// Fix for default icon issue
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 const SPARQLQueryResults = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Helper function to extract the plain value from a URI or literal
   const getPlainValue = (value) => {
     if (!value) return '';
-    // If it's a URI, extract the local name
     if (value.startsWith('http')) {
       const segments = value.split('#');
       return segments.length > 1 ? segments[1] : value.split('/').pop();
     }
-    // Return the value as-is if it's a literal
     return value;
   };
 
@@ -46,7 +44,7 @@ const SPARQLQueryResults = () => {
               ?location smw:hasLatitudeDimension ?latitude ;
                         smw:hasLongitudeDimension ?longitude .
             }
-            LIMIT 500
+            LIMIT 1000
           `,
         });
 
@@ -74,31 +72,40 @@ const SPARQLQueryResults = () => {
     return <Typography color="error">Error: {error}</Typography>;
   }
 
+  const markerData = data.map((row) => ({
+    location: getPlainValue(row.location?.value),
+    lat: parseFloat(getPlainValue(row.latitude?.value)),
+    lng: parseFloat(getPlainValue(row.longitude?.value)),
+  }));
+
   return (
     <Box sx={{ padding: 2 }}>
       <Typography variant="h4" gutterBottom>
-        SPARQL Query Results
+        Crime Location Map
       </Typography>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Location</TableCell>
-              <TableCell>Latitude</TableCell>
-              <TableCell>Longitude</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((row, index) => (
-              <TableRow key={index}>
-                <TableCell>{getPlainValue(row.location?.value)}</TableCell>
-                <TableCell>{getPlainValue(row.latitude?.value)}</TableCell>
-                <TableCell>{getPlainValue(row.longitude?.value)}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <MapContainer
+        center={[markerData[0]?.lat || 41.85, markerData[0]?.lng || -87.65]} // Center on the first marker
+        zoom={12}
+        style={{ height: '600px', width: '100%' }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <MarkerClusterGroup>
+          {markerData.map((point, index) => (
+            <Marker key={index} position={[point.lat, point.lng]}>
+              <Popup>
+                <strong>Location:</strong> {point.location}
+                <br />
+                <strong>Latitude:</strong> {point.lat}
+                <br />
+                <strong>Longitude:</strong> {point.lng}
+              </Popup>
+            </Marker>
+          ))}
+        </MarkerClusterGroup>
+      </MapContainer>
     </Box>
   );
 };
