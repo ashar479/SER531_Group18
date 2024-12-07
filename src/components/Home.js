@@ -65,19 +65,19 @@ const Home = () => {
         <Grid item xs={12} sm={6} md={3}>
           <Paper sx={{ padding: 2, textAlign: 'center' }}>
             <Typography variant="h6">
-              Evaluating the Impact of Police Presence on Crime Reduction
+              Yearly Analysis of Arrests by Crime Type
             </Typography>
             <Typography>
-              Evaluating the impact of police presence on crime reduction is
-              essential for optimizing law enforcement strategies. The project
-              uses arrest data as a proxy for police intervention, analyzing its
-              effect across various crime types and locations. By examining the
-              distribution of arrests and police presence across Districts and
-              Beats, it assesses how police interventions influence specific
-              crime types and locations. This analysis supports data-driven
-              decisions on resource allocation, allow- ing law enforcement to
-              focus efforts on areas where police presence has shown measurable
-              impact.
+              This use case focuses on the number of arrests made for each type
+              of crime in a given year. Using arrest data and information on the
+              type of crime, the further breaks down the arrests by categories
+              such as theft, robbery. By doing so, this type of analysis helps
+              to portray trends in law enforcement activity and points out which
+              crime types received most attention during the year. Such insights
+              enable stakeholders to evaluate law enforcement priorities, assess
+              resource allocation, and understand patterns of police
+              intervention across different crime categories. This is the yearly
+              analysis of arrests according to the different crime types.
             </Typography>
             <Link to="/police_impact">
               <button style={{ padding: '10px', marginTop: '10px' }}>

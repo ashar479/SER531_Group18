@@ -8,7 +8,7 @@ const Header = () => {
     <AppBar position="sticky">
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Vedanya
+          CrimeWare
         </Typography>
         <Button color="inherit" component={Link} to="/">
           Home
